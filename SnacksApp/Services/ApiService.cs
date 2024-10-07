@@ -9,7 +9,7 @@ namespace SnacksApp.Services
     public class ApiService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "";
+        private readonly string _baseUrl = "https://vvwm5bcp-44353.uks1.devtunnels.ms/";
         private readonly ILogger<ApiService> _logger;
 
         JsonSerializerOptions _serializerOptions;
