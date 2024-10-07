@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnacksApp", "SnacksApp\SnacksApp.csproj", "{20146CB9-BAC1-4DDE-A424-D4F736D3F52E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20146CB9-BAC1-4DDE-A424-D4F736D3F52E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20146CB9-BAC1-4DDE-A424-D4F736D3F52E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20146CB9-BAC1-4DDE-A424-D4F736D3F52E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{20146CB9-BAC1-4DDE-A424-D4F736D3F52E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20146CB9-BAC1-4DDE-A424-D4F736D3F52E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20146CB9-BAC1-4DDE-A424-D4F736D3F52E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {15067203-17F8-4800-8943-3BD475208EE9}
+	EndGlobalSection
+EndGlobal
