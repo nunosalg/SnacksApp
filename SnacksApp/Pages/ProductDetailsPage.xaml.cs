@@ -75,16 +75,70 @@ public partial class ProductDetailsPage : ContentPage
 
     private void BtnRemove_Clicked(object sender, EventArgs e)
     {
+        if (int.TryParse(LblQuantity.Text, out int quantity) &&
+            decimal.TryParse(LblProductPrice.Text, out decimal unitPrice))
+        {
+            // Decrementa a quantidade, e n o permite que seja menor que 1
+            quantity = Math.Max(1, quantity - 1);
+            LblQuantity.Text = quantity.ToString();
 
+            // Calcula o preço total
+            var totalPrice = quantity * unitPrice;
+            LblTotalPrice.Text = totalPrice.ToString();
+        }
+        else
+        {
+            // Tratar caso as conversões falhem
+            DisplayAlert("Error", "Invalid values.", "OK");
+        }
     }
 
     private void BtnAdd_Clicked(object sender, EventArgs e)
     {
+        if (int.TryParse(LblQuantity.Text, out int quantity) &&
+            decimal.TryParse(LblProductPrice.Text, out decimal unitPrice))
+        {
+            // Incrementa a quantidade
+            quantity++;
+            LblQuantity.Text = quantity.ToString();
 
+            // Calcula o preço total
+            var totalPrice = quantity * unitPrice;
+            LblTotalPrice.Text = totalPrice.ToString(); // Formata como moeda
+        }
+        else
+        {
+            // Tratar caso as conversões falhem
+            DisplayAlert("Error", "Invalid values.", "OK");
+        }
     }
 
-    private void BtnAddToCart_Clicked(object sender, EventArgs e)
+    private async void BtnAddToCart_Clicked(object sender, EventArgs e)
     {
-
+        try
+        {
+            var purchaseCart = new PurchaseCart()
+            {
+                Quantity = Convert.ToInt32(LblQuantity.Text),
+                Price = Convert.ToDecimal(LblProductPrice.Text),
+                TotalValue = Convert.ToDecimal(LblTotalPrice.Text),
+                ProductId = _productId,
+                ClientId = Preferences.Get("userid", 0)
+            };
+            var response = await _apiService.AddItemToCart(purchaseCart);
+            if (response.Data)
+            {
+                await DisplayAlert("Success", "Item added to cart !", "OK");
+                await Navigation.PopAsync();
+            }
+            else
+            {
+                await DisplayAlert("Error", $"Failed adding item: {response.ErrorMessage}", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"Unexpected error ocurred: {ex.Message}", "OK");
+        }
     }
 }
