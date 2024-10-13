@@ -129,7 +129,8 @@ namespace SnacksApp.Services
             {
                 AddAuthorizationHeader();
 
-                var response = await _httpClient.GetAsync(AppConfig.BaseUrl + endpoint);
+                var url = AppConfig.BaseUrl + endpoint;
+                var response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
                 {
