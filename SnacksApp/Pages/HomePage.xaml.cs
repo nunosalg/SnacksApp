@@ -9,7 +9,6 @@ public partial class HomePage : ContentPage
     private readonly ApiService _apiService;
     private readonly IValidator _validator;
     private bool _loginPageDisplayed = false;
-    private bool _isDataLoaded = false;
 
     public HomePage(ApiService apiService, IValidator validator)
 	{
