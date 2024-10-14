@@ -8,15 +8,17 @@ public partial class HomePage : ContentPage
 {
     private readonly ApiService _apiService;
     private readonly IValidator _validator;
+    private readonly FavoritesService _favoritesService;
     private bool _loginPageDisplayed = false;
     private bool _isDataLoaded = false;
 
-    public HomePage(ApiService apiService, IValidator validator)
+    public HomePage(ApiService apiService, IValidator validator, FavoritesService favoritesService)
 	{
 		InitializeComponent();
         LblUserName.Text = "Hello, " + Preferences.Get("username", string.Empty);
         _apiService = apiService;
         _validator = validator;
+        _favoritesService = favoritesService;
         Title = AppConfig.HomePageTitle;
     }
 
@@ -126,7 +128,7 @@ public partial class HomePage : ContentPage
     private async Task DisplayLoginPage()
     {
         _loginPageDisplayed = true;
-        await Navigation.PushAsync(new LoginPage(_apiService, _validator));
+        await Navigation.PushAsync(new LoginPage(_apiService, _validator, _favoritesService));
     }
 
     private void CvCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -139,7 +141,8 @@ public partial class HomePage : ContentPage
         Navigation.PushAsync(new ProductsListPage(_apiService,
                                                   _validator,
                                                   currentSelection.Name!,
-                                                  currentSelection.Id
+                                                  currentSelection.Id,
+                                                  _favoritesService
                                                   ));
 
         ((CollectionView)sender).SelectedItem = null;
@@ -169,7 +172,7 @@ public partial class HomePage : ContentPage
             return;
 
         Navigation.PushAsync(new ProductDetailsPage(
-                                 currentSelection.Id, currentSelection.Name!, _apiService, _validator
+                                 currentSelection.Id, currentSelection.Name!, _apiService, _validator, _favoritesService
         ));
 
         collectionView.SelectedItem = null;

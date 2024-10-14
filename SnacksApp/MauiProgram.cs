@@ -23,7 +23,7 @@ namespace SnacksApp
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<ApiService>();
             builder.Services.AddSingleton<IValidator, Validator>();
-
+            builder.Services.AddSingleton<FavoritesService>();
 
             return builder.Build();
         }

@@ -8,21 +8,22 @@ namespace SnacksApp
     {
         private readonly ApiService _apiService;
         private readonly IValidator _validator;
+        private readonly FavoritesService _favoritesService;
 
-        public AppShell(ApiService apiService, IValidator validator)
+        public AppShell(ApiService apiService, IValidator validator, FavoritesService favoritesService)
         {
             InitializeComponent();
             _apiService = apiService;
             _validator = validator;
-
+            _favoritesService = favoritesService;
             ConfigureShell();
         }
 
         private void ConfigureShell()
         {
-            var homePage = new HomePage(_apiService, _validator);
-            var cartPage = new CartPage(_apiService, _validator);
-            var favoritesPage = new FavoritesPage();
+            var homePage = new HomePage(_apiService, _validator, _favoritesService);
+            var cartPage = new CartPage(_apiService, _validator, _favoritesService);
+            var favoritesPage = new FavoritesPage(_apiService, _validator, _favoritesService);
             var profilePage = new ProfilePage();
 
             Items.Add(new TabBar
