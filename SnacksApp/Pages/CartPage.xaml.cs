@@ -24,6 +24,21 @@ public partial class CartPage : ContentPage
     {
         base.OnAppearing();
         await GetPurchaseCartItems();
+
+        bool savedAddress = Preferences.ContainsKey("address");
+
+        if (savedAddress)
+        {
+            string name = Preferences.Get("name", string.Empty);
+            string address = Preferences.Get("address", string.Empty);
+            string phone = Preferences.Get("phone", string.Empty);
+
+            LblAddress.Text = $"{name}\n{address}\n{phone}";
+        }
+        else
+        {
+            LblAddress.Text = "Type your address";
+        }
     }
 
     private async Task<IEnumerable<PurchaseCartItem>> GetPurchaseCartItems()
@@ -85,27 +100,51 @@ public partial class CartPage : ContentPage
         await Navigation.PushAsync(new LoginPage(_apiService, _validator));
     }
 
-    private void BtnAdd_Clicked(object sender, EventArgs e)
+    private async void BtnAdd_Clicked(object sender, EventArgs e)
     {
-
+        if (sender is Button button && button.BindingContext is PurchaseCartItem cartItem)
+        {
+            cartItem.Quantity++;
+            UpdateTotalPrice();
+            await _apiService.UpdateCartItemQuantity(cartItem.ProductId, "increase");
+        }
     }
 
-    private void BtnDelete_Clicked(object sender, EventArgs e)
+    private async void BtnDecrease_Clicked(object sender, EventArgs e)
     {
+        if (sender is Button button && button.BindingContext is PurchaseCartItem cartItem)
+        {
+            if (cartItem.Quantity == 1) return;
+            else
+            {
+                cartItem.Quantity--;
+                UpdateTotalPrice();
+                await _apiService.UpdateCartItemQuantity(cartItem.ProductId, "decrease");
+            }
+        }
+    }
 
+    private async void BtnDelete_Clicked(object sender, EventArgs e)
+    {
+        if (sender is ImageButton button && button.BindingContext is PurchaseCartItem cartItem)
+        {
+            bool response = await DisplayAlert("Confirm",
+                          "Delete item from the purhase cart?", "Yes", "No");
+            if (response)
+            {
+                PurchaseCartItems.Remove(cartItem);
+                UpdateTotalPrice();
+                await _apiService.UpdateCartItemQuantity(cartItem.ProductId, "delete");
+            }
+        }
     }
 
     private void BtnEditAddress_Clicked(object sender, EventArgs e)
     {
-
+        Navigation.PushAsync(new AddressPage());
     }
 
     private void TapConfirmOrder_Tapped(object sender, TappedEventArgs e)
-    {
-
-    }
-
-    private void BtnDecrease_Clicked(object sender, EventArgs e)
     {
 
     }
