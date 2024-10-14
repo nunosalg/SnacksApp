@@ -120,8 +120,8 @@ public partial class ProductDetailsPage : ContentPage
             var purchaseCart = new PurchaseCart()
             {
                 Quantity = Convert.ToInt32(LblQuantity.Text),
-                Price = Convert.ToDecimal(LblProductPrice.Text),
-                TotalValue = Convert.ToDecimal(LblTotalPrice.Text),
+                UnitPrice = Convert.ToDecimal(LblProductPrice.Text),
+                Total = Convert.ToDecimal(LblTotalPrice.Text),
                 ProductId = _productId,
                 ClientId = Preferences.Get("userid", 0)
             };

@@ -21,7 +21,7 @@ namespace SnacksApp
         private void ConfigureShell()
         {
             var homePage = new HomePage(_apiService, _validator);
-            var cartPage = new CartPage();
+            var cartPage = new CartPage(_apiService, _validator);
             var favoritesPage = new FavoritesPage();
             var profilePage = new ProfilePage();
 
