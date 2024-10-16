@@ -204,6 +204,32 @@ namespace SnacksApp.Services
             }
         }
 
+        public async Task<ApiResponse<bool>> UploadUserImage(byte[] imageArray)
+        {
+            try
+            {
+                var content = new MultipartFormDataContent();
+                content.Add(new ByteArrayContent(imageArray), "image", "image.jpg");
+                var response = await PostRequest("api/users/uploadimage", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorMessage = response.StatusCode == HttpStatusCode.Unauthorized
+                      ? "Unauthorized"
+                      : $"Error sending HTTP requisition: {response.StatusCode}";
+
+                    _logger.LogError($"Error sending HTTP requisition: {response.StatusCode}");
+                    return new ApiResponse<bool> { ErrorMessage = errorMessage };
+                }
+                return new ApiResponse<bool> { Data = true };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error uploading user image: {ex.Message}");
+                return new ApiResponse<bool> { ErrorMessage = ex.Message };
+            }
+        }
+
         private async Task<HttpResponseMessage> PutRequest(string uri, HttpContent content)
         {
             var urlAddress = AppConfig.BaseUrl + uri;
@@ -241,6 +267,12 @@ namespace SnacksApp.Services
         {
             var endpoint = $"api/ShoppingCartItems/{userId}";
             return await GetAsync<List<PurchaseCartItem>>(endpoint);
+        }
+
+        public async Task<(ProfileImage? ProfileImage, string? ErrorMessage)> GetUserProfileImage()
+        {
+            string endpoint = "api/users/userimage";
+            return await GetAsync<ProfileImage>(endpoint);
         }
 
         private async Task<(T? Data, string? ErrorMessage)> GetAsync<T>(string endpoint)
