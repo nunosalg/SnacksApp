@@ -93,7 +93,7 @@ public partial class ProfilePage : ContentPage
             var imageArray = await SelectImageAsync();
             if (imageArray is null)
             {
-                await DisplayAlert("Error", "Unable to upload the image.", "Ok");
+                await DisplayAlert("Error", "Unable to load the image.", "Ok");
                 return;
             }
             ImgBtnProfile.Source = ImageSource.FromStream(() => new MemoryStream(imageArray));
@@ -101,7 +101,7 @@ public partial class ProfilePage : ContentPage
             var response = await _apiService.UploadUserImage(imageArray);
             if (response.Data)
             {
-                await DisplayAlert("", "Image uploaded successfully", "Ok");
+                await DisplayAlert("", "Image loaded successfully", "Ok");
             }
             else
             {
@@ -116,7 +116,7 @@ public partial class ProfilePage : ContentPage
 
     private void TapOrders_Tapped(object sender, TappedEventArgs e)
     {
-        
+        Navigation.PushAsync(new OrdersPage(_apiService, _validator, _favoritesService));
     }
 
     private void TapMyAccount_Tapped(object sender, TappedEventArgs e)
