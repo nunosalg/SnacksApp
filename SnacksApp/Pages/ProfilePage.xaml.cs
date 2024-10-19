@@ -131,7 +131,8 @@ public partial class ProfilePage : ContentPage
 
     private void BtnLogout_Clicked(object sender, EventArgs e)
     {
-
+        Preferences.Set("accesstoken", string.Empty);
+        Application.Current!.MainPage = new NavigationPage(new LoginPage(_apiService, _validator, _favoritesService));
     }
 
     private async Task DisplayLoginPage()

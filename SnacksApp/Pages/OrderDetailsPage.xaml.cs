@@ -30,6 +30,10 @@ public partial class OrderDetailsPage : ContentPage
     {
         try
         {
+            // Show loading indicator
+            loadIndicator.IsRunning = true;
+            loadIndicator.IsVisible = true;
+
             var (orderDetails, errorMessage) = await _apiService.GetOrderDetails(orderId);
 
             if (errorMessage == "Unauthorized" && !_loginPageDisplayed)
@@ -51,6 +55,12 @@ public partial class OrderDetailsPage : ContentPage
         catch (Exception)
         {
             await DisplayAlert("Error", "An error ocurred trying to obtain details. Try again later.", "OK");
+        }
+        finally
+        {
+            // Hide loading indicator
+            loadIndicator.IsRunning = false;
+            loadIndicator.IsVisible = false;
         }
     }
 
